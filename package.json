@@ -1,0 +1,30 @@
+{
+  "name": "loremiester",
+  "version": "1.0.0",
+  "description": "An API to access Wastelander Lore",
+  "main": "index.js",
+  "dependencies": {
+    "gulp": "^3.9.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "gogogo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mjlemay/loremiester.git"
+  },
+  "keywords": [
+    "wasteland",
+    "wasteland",
+    "weekend",
+    "lore",
+    "loremiester"
+  ],
+  "author": "Michael LeMay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mjlemay/loremiester/issues"
+  },
+  "homepage": "https://github.com/mjlemay/loremiester#readme"
+}
