@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "^4.13.3",
     "gulp": "^3.9.0",
-    "mongodb": "^2.0.46"
+    "mongodb": "^2.0.46",
+    "mongoose": "^4.2.2"
   },
   "devDependencies": {},
   "scripts": {

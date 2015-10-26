@@ -1,16 +1,24 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var app = express();
 
 app.get('/', function (req, res) {
-  res.send('<h1>LoreMiester API</h1><p>Please use /api to acess a list of URIs.</p>');
+	mongoose.connect('mongodb://localhost/test');
+	var db = mongoose.connection;
+	db.on('error', console.error.bind(console, 'connection error:'));
+	db.once('open', function (callback) {
+	  console.log('WE HAVE MONGO CONNECTION YO!')
+	});
+
+	res.send('<h1>LoreMiester API</h1><p>Please use /api to acess a list of URIs.</p>');
 });
 
 app.get('/api', function (req, res) {
-  res.send('<h1>LoreMiester API</h1><p><ul><li><strong>/api/stories/*</strong> - displays a paginated list of stories.</li><li><strong>/api/characters/*</strong> - displays a paginated list of characters.</li></ul></p>');
+	res.send('<h1>LoreMiester API</h1><p><ul><li><strong>/api/stories/*</strong> - displays a paginated list of stories.</li><li><strong>/api/characters/*</strong> - displays a paginated list of characters.</li></ul></p>');
 });
 
 app.get('/api/stories', function (req, res) {
-  res.send('<h1>LoreMiester API</h1><p><ul>TODO: REPLACE WITH JSON OBJECT</p>');
+	res.send('<h1>LoreMiester API</h1><p><ul>TODO: REPLACE WITH JSON OBJECT</p>');
 });
 
 app.get('/api/story/:id', function (req, res) {
