@@ -4,6 +4,7 @@
   "description": "An API to access Wastelander Lore",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "gulp": "^3.9.0",
     "mongodb": "^2.0.46",
