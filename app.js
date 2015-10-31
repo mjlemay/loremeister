@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var _ = require('lodash');
 var Character = require('./models/character');
 var app = express();
 var router = express.Router();
@@ -16,15 +17,13 @@ router.use('/', function (req, res, next) {
 	next();
 });
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', router);
 app.use('/api', router);
 app.use('/api/stories', router);
-app.use('/api/story/:id', router);
+app.use('/api/story/:story_slug', router);
 app.use('/api/characters', router);
-app.use('/api/character/:id', router);
+app.use('/api/character/:character_slug', router);
 
 
 router.get('/', function (req, res) {
@@ -50,15 +49,16 @@ router.route('/api/characters')
         var character = new Character();      // create a new instance of the Character model
         console.log('req',req);
         character.name = req.body.name;
-	    character.origin = req.body.origin;
-	    character.background = req.body.background;
-	    character.strength = req.body.strength;
-	    character.weakness = req.body.weakness;
-	    character.goals = req.body.goals;
-	    character.likes = req.body.likes;
-	    character.dislikes = req.body.dislikes;
-	    character.inspirations = req.body.inspirations;
-	    character.girth = req.body.girth;
+        character.slug = encodeURI(req.body.name.split(' ').join('_'));
+  	    character.origin = req.body.origin;
+  	    character.background = req.body.background;
+  	    character.strength = req.body.strength;
+  	    character.weakness = req.body.weakness;
+  	    character.goals = req.body.goals;
+  	    character.likes = req.body.likes;
+  	    character.dislikes = req.body.dislikes;
+  	    character.inspirations = req.body.inspirations;
+  	    character.girth = req.body.girth;
 
         // save the bear and check for errors
         character.save(function(err) {
@@ -72,17 +72,61 @@ router.route('/api/characters')
      // get all the characters (accessed at GET http://localhost:3000/api/characters)
     .get(function(req, res) {
         Character.find(function(err, characters) {
-            if (err)
-                res.send(err);
-
-            res.json(characters);
+          if (err) {
+            res.send(err);
+          }
+          res.json(characters);
         });
-    });
+    })
 
+
+router.route('/api/character/:character_slug')
+
+  // get the character with slug (accessed at GET http://localhost:3000/api/character/:character_id)
+  .get(function(req, res) {
+    console.log(req.params.character_slug);
+      Character.findOne({slug: req.params.character_slug}, function(err, character) {
+          if (err) {
+            res.json(err);
+          }
+          res.json(character);
+      });
+  })
+  .put(function(req, res) {
+      Character.findOne({slug: req.params.character_slug}, function(err, character) {
+          if (err) {
+            res.json(err);
+          }
+          _.forOwn(req.body, function(value, key) {
+            character[key] = value;
+          });
+          character.save(function(err) {
+            if (err) {
+              res.send(err);
+            }
+            res.json({ message: 'Character updated.' });
+          });
+      });
+  })
+  .delete(function(req, res) {
+      Character.remove({slug: req.params.character_slug}, function(err, character) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.json({
+              message: 'Character deleted.'
+            });
+          }
+      });
+  });
+
+
+
+/*
 router.get('/api/character/:id', function (req, res) {
   res.send('<h1>LoreMiester API</h1><p><ul>TODO: REPLACE WITH JSON OBJECT</p>');
 });
-
+*/
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
