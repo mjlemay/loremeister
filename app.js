@@ -37,13 +37,74 @@ router.get('/api', function (req, res) {
 	res.json({ message: 'TODO: LIST OF APIS'});  
 });
 
-router.get('/api/stories', function (req, res) {
-	res.send('<h1>LoreMiester API</h1><p><ul>TODO: REPLACE WITH JSON OBJECT</p>');
-});
 
-router.get('/api/story/:id', function (req, res) {
-  res.send('<h1>LoreMiester API</h1><p><ul>TODO: REPLACE WITH JSON OBJECT</p>');
-});
+router.route('/api/stories')
+    .post(function(req, res) {
+        var story = new Story();// create a new instance of the Story model
+        story.title = req.body.title;
+        story.slug = encodeURI(req.body.title.split(' ').join('_'));
+        story.summary = req.body.summary;
+        story.body = req.body.body;
+        story.published_at = req.body.publish_date;
+        story.is_published = req.body.is_published;
+        story.author = req.body.author;
+        story.creator = req.body.creator;
+
+        // save the bear and check for errors
+        story.save(function(err) {
+            if (err)
+                res.send(err);
+            res.json({ message: 'Story created!' });
+        });
+        
+    })
+    .get(function(req, res) {
+        Story.find(function(err, stories) {
+          if (err) {
+            res.send(err);
+          }
+          res.json(stories);
+        });
+    })
+
+
+router.route('/api/story/:story_slug')
+  .get(function(req, res) {
+    console.log(req.params.story_slug);
+      Story.findOne({slug: req.params.story_slug}, function(err, story) {
+          if (err) {
+            res.json(err);
+          }
+          res.json(story);
+      });
+  })
+  .put(function(req, res) {
+      Story.findOne({slug: req.params.story_slug}, function(err, story) {
+          if (err) {
+            res.json(err);
+          }
+          _.forOwn(req.body, function(value, key) {
+            story[key] = value;
+          });
+          story.save(function(err) {
+            if (err) {
+              res.send(err);
+            }
+            res.json({ message: 'Story updated.' });
+          });
+      });
+  })
+  .delete(function(req, res) {
+      Story.remove({slug: req.params.story_slug}, function(err, story) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.json({
+              message: 'Story deleted.'
+            });
+          }
+      });
+  });
 
 router.route('/api/characters')
     // create character (accessed at POST http://localhost:3000/api/characters)
@@ -71,8 +132,6 @@ router.route('/api/characters')
         });
         
     })
-
-     // get all the characters (accessed at GET http://localhost:3000/api/characters)
     .get(function(req, res) {
         Character.find(function(err, characters) {
           if (err) {
@@ -84,8 +143,6 @@ router.route('/api/characters')
 
 
 router.route('/api/character/:character_slug')
-
-  // get the character with slug (accessed at GET http://localhost:3000/api/character/:character_id)
   .get(function(req, res) {
     console.log(req.params.character_slug);
       Character.findOne({slug: req.params.character_slug}, function(err, character) {

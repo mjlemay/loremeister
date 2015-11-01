@@ -8,11 +8,16 @@ var StorySchema   = new Schema({
     slug: String,
     summary: String,
     body: String,
-    publish_date: Date,
-    creation_date: Date,
+    published_at: Date,
     is_published: Boolean,
     author: String,
     creator: String
+    },
+    {timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
 });
+
 
 module.exports = mongoose.model('Story', StorySchema);
