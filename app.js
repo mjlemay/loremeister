@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var passport = require('passport');
 var _ = require('lodash');
 var app = express();
 var router = express.Router();
@@ -56,7 +57,6 @@ router.route('/api/stories')
                 res.send(err);
             res.json({ message: 'Story created!' });
         });
-        
     })
     .get(function(req, res) {
         Story.find(function(err, stories) {
