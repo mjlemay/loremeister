@@ -2,9 +2,12 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var _ = require('lodash');
-var Character = require('./models/character');
 var app = express();
 var router = express.Router();
+
+/* Schemas listed Below */
+var Character = require('./models/character');
+var Story = require('./models/story');
 
 mongoose.connect('mongodb://localhost/test');
 var db = mongoose.connection;
