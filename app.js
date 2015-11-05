@@ -62,13 +62,13 @@ app.post('/login', passport.authenticate('local-login', {
     failureFlash : true
 }));
 
-app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 
 // handle the callback after facebook has authenticated the user
 app.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
-        successRedirect : '/profile',
-        failureRedirect : '/error/loginFailure'
+        successRedirect: '/profile',
+        failureRedirect: '/error/loginFailure'
     }));
 
 router.get('/', function (req, res) {
