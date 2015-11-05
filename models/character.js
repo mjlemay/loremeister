@@ -14,7 +14,9 @@ var CharacterSchema   = new Schema({
     likes: String,
     dislikes: String,
     inspirations: String,
-    girth: String
+    girth: String,
+    creator: String,
+    connectedStories: []
 });
 
 module.exports = mongoose.model('Character', CharacterSchema);

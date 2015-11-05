@@ -10,13 +10,13 @@ var StorySchema   = new Schema({
     body: String,
     published_at: Date,
     is_published: Boolean,
-    author: String,
     creator: String
     },
     {timestamps: {
         createdAt: 'created_at',
         updatedAt: 'updated_at'
-    }
+    },
+    connectedCharacters: []
 });
 
 
