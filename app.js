@@ -13,8 +13,11 @@ var router = express.Router();
 var configDB = require('./config/db.js');
 
 /* Schemas listed Below */
-var Character = require('./models/character');
-var Story = require('./models/story');
+var Character = require('./models/character')(router);
+
+/* Routes Listed Here */
+var storiesRouter = require('./routers/storiesRouter');
+var storyRouter = require('./routers/storyRouter');
 
 /* Loads a Mongo DB */
 mongoose.connect(configDB.url);
@@ -47,8 +50,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', router);
 app.use('/login', router);
 app.use('/api', router);
-app.use('/api/stories', router);
-app.use('/api/story/:story_slug', router);
+app.use('/api/stories', storiesRouter);
+app.use('/api/story', storyRouter);
 app.use('/api/characters', router);
 app.use('/api/character/:character_slug', router);
 app.post('/signup', passport.authenticate('local-signup', {
@@ -96,86 +99,6 @@ router.get('/error/loginFailure', function (req, res) {
   res.json({ error: 'Failed to Login'});
 });
 
-
-router.route('/api/stories')
-    .post(function(req, res) {
-      if (req.user) {
-        // logged in
-        var story = new Story();// create a new instance of the Story model
-        story.title = req.body.title;
-        story.slug = encodeURI(req.body.title.split(' ').join('_'));
-        story.summary = req.body.summary;
-        story.body = req.body.body;
-        story.published_at = req.body.publish_date;
-        story.is_published = req.body.is_published;
-        story.author = req.body.author;
-        story.creator = req.body.creator;
-
-        // save the bear and check for errors
-        story.save(function(err) {
-            if (err)
-                res.send(err);
-            res.json({ message: 'Story created!' });
-        });
-      } else {
-        res.redirect('/error/loginFailure');
-      }
-    })
-    .get(function(req, res) {
-        Story.find(function(err, stories) {
-          if (err) {
-            res.send(err);
-          }
-          res.json(stories);
-        });
-    })
-
-
-router.route('/api/story/:story_slug')
-  .get(function(req, res) {
-    console.log(req.params.story_slug);
-      Story.findOne({slug: req.params.story_slug}, function(err, story) {
-          if (err) {
-            res.json(err);
-          }
-          res.json(story);
-      });
-  })
-  .put(function(req, res) {
-      Story.findOne({slug: req.params.story_slug}, function(err, story) {
-          if (err) {
-            res.json(err);
-          }
-          if (req.user) {
-            _.forOwn(req.body, function(value, key) {
-              story[key] = value;
-            });
-            story.save(function(err) {
-              if (err) {
-                res.send(err);
-              }
-              res.json({ message: 'Story updated.' });
-            });
-          } else {
-            res.redirect('/error/loginFailure');
-          }
-      });
-  })
-  .delete(function(req, res) {
-      if (req.user) {
-        Story.remove({slug: req.params.story_slug}, function(err, story) {
-            if (err) {
-              res.send(err);
-            } else {
-              res.json({
-                message: 'Story deleted.'
-              });
-            }
-        });
-      } else {
-        res.json({ error: 'Failed to Login'});
-      }
-  });
 
 router.route('/api/characters')
     // create character (accessed at POST http://localhost:3000/api/characters)
