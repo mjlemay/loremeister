@@ -27,7 +27,7 @@ var configDB = require('./config/db.js');
 if (typeof process.env.DB_CONF !== 'undefined') {
 	DBConfigURL = process.env.DB_CONF;
 } else {
-	DBConfigURL = configDB.url;
+	DBConfigURL = configDB.url;gco
 }
 mongoose.connect(DBConfigURL);
 var db = mongoose.connection;
@@ -61,7 +61,7 @@ app.use('/user', userRouter);
 app.use('/error', userRouter);
 
 
-var server = app.listen(3000, function () {
+var server = app.listen((process.env.PORT || 3000), function () {
   var host = server.address().address;
   var port = server.address().port;
 });
