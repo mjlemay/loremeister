@@ -33,24 +33,38 @@ router.route('/:story_slug')
             });
           } else {
             res.json({
-              message: 'Cannot modify tribe.'
+              message: 'Cannot modify story.'
             });
           }
       });
   })
   .delete(function(req, res) {
       if (req.user) {
-        Story.remove({slug: req.params.story_slug}, function(err, story) {
-            if (err) {
-              res.send(err);
+        Story.findOne({slug: req.params.story_slug}, function(err, story) {
+          if (err) {
+            res.json(err);
+          } else {
+            if (req.user.is_admin === true ||
+              req.user._id.toString() === story.creator_id) {
+              Story.remove({slug: req.params.story_slug}, function(err, story) {
+                if (err) {
+                  res.send(err);
+                } else {
+
+                  res.json({
+                    message: 'Story deleted.'
+                  });
+                }
+              });
             } else {
               res.json({
-                message: 'Story deleted.'
+                message: 'Cannot delete story.'
               });
             }
+          }
         });
       } else {
-        res.json({ error: 'Failed to Login'});
+        res.json({ error: 'Failed to Login.'});
       }
   });
 

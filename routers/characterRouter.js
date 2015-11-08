@@ -38,18 +38,31 @@ router.route('/:character_slug')
       });
   })
   .delete(function(req, res) {
-      if (req.user) {
-        Character.remove({slug: req.params.character_slug}, function(err, character) {
-            if (err) {
-              res.send(err);
+            if (req.user) {
+        Character.findOne({slug: req.params.character_slug}, function(err, character) {
+          if (err) {
+            res.json(err);
+          } else {
+            if (req.user.is_admin === true ||
+              req.user._id.toString() === character.creator_id) {
+              Character.remove({slug: req.params.character_slug}, function(err, character) {
+                if (err) {
+                  res.send(err);
+                } else {
+                  res.json({
+                    message: 'Character deleted.'
+                  });
+                }
+              });
             } else {
               res.json({
-                message: 'Character deleted.'
+                message: 'Cannot delete story.'
               });
             }
+          }
         });
       } else {
-        res.json({ error: 'Failed to Login'});
+        res.json({ error: 'Failed to Login.'});
       }
   });
 
