@@ -2,11 +2,11 @@
 var express = require('express');
 var router = express.Router();
 var Story = require('../models/story');
+var _ = require('lodash');
 
 
 router.route('/:story_slug')
   .get(function(req, res) {
-    console.log(req.params.story_slug);
       Story.findOne({slug: req.params.story_slug}, function(err, story) {
           if (err) {
             res.json(err);
