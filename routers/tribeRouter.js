@@ -1,42 +1,42 @@
 //characterRouter.js
 var express = require('express');
 var router = express.Router();
-var Character = require('../models/character');
+var Tribe = require('../models/tribe');
 var _ = require('lodash');
 
-router.route('/:character_slug')
+router.route('/:tribe_slug')
   .get(function(req, res) {
-      Character.findOne({slug: req.params.character_slug}, function(err, character) {
+      Tribe.findOne({slug: req.params.tribe_slug}, function(err, tribe) {
           if (err) {
             res.json(err);
           }
-          res.json(character);
+          res.json(tribe);
       });
   })
   .put(function(req, res) {
-      Character.findOne({slug: req.params.character_slug}, function(err, character) {
+      Tribe.findOne({slug: req.params.tribe_slug}, function(err, tribe) {
           if (err) {
             res.json(err);
           }
           _.forOwn(req.body, function(value, key) {
-            character[key] = value;
+            tribe[key] = value;
           });
-          character.save(function(err) {
+          tribe.save(function(err) {
             if (err) {
               res.send(err);
             }
-            res.json({ message: 'Character updated.' });
+            res.json({ message: 'Tribe updated.' });
           });
       });
   })
   .delete(function(req, res) {
       if (req.user) {
-        Character.remove({slug: req.params.character_slug}, function(err, character) {
+        Tribe.remove({slug: req.params.tribe_slug}, function(err, tribe) {
             if (err) {
               res.send(err);
             } else {
               res.json({
-                message: 'Character deleted.'
+                message: 'Tribe deleted.'
               });
             }
         });

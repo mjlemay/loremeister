@@ -18,6 +18,8 @@ var storiesRouter = require('./routers/storiesRouter');
 var storyRouter = require('./routers/storyRouter');
 var charactersRouter = require('./routers/charactersRouter');
 var characterRouter = require('./routers/characterRouter');
+var tribeRouter = require('./routers/tribeRouter');
+var tribesRouter = require('./routers/tribesRouter');
 var userRouter = require('./routers/userRouter');
 
 /* Loads a Mongo DB */
@@ -48,6 +50,8 @@ app.use('/api/stories', storiesRouter);
 app.use('/api/story', storyRouter);
 app.use('/api/characters', charactersRouter);
 app.use('/api/character', characterRouter);
+app.use('/api/tribes', tribesRouter);
+app.use('/api/tribe', tribeRouter);
 app.use('/user', userRouter);
 app.use('/error', userRouter);
 

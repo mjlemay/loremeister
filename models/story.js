@@ -16,7 +16,8 @@ var StorySchema   = new Schema({
         createdAt: 'created_at',
         updatedAt: 'updated_at'
     },
-    connectedCharacters: []
+    connectedCharacters: [],
+    connectedTribes: []
 });
 
 
