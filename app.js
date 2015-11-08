@@ -20,6 +20,7 @@ var storiesRouter = require('./routers/storiesRouter');
 var storyRouter = require('./routers/storyRouter');
 var charactersRouter = require('./routers/charactersRouter');
 var characterRouter = require('./routers/characterRouter');
+var userRouter = require('./routers/userRouter');
 
 /* Loads a Mongo DB */
 mongoose.connect(configDB.url);
@@ -50,51 +51,20 @@ router.use('/', function (req, res, next) {
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', router);
-app.use('/login', router);
 app.use('/api', router);
 app.use('/api/stories', storiesRouter);
 app.use('/api/story', storyRouter);
 app.use('/api/characters', charactersRouter);
 app.use('/api/character', characterRouter);
-app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/error/loginFailure',
-    failureFlash : true // allow flash messages
-}));
-app.post('/login', passport.authenticate('local-login', {
-    successRedirect : '/profile',
-    failureRedirect : '/profile',
-    failureFlash : true
-}));
+app.use('/user', userRouter);
 
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-
-// handle the callback after facebook has authenticated the user
-app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', {
-        successRedirect: '/profile',
-        failureRedirect: '/profile'
-    }));
 
 router.get('/', function (req, res) {
 	res.json({ message: 'LoreMiester API - Use /api to get a list of URIs'});  
 });
 
-router.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-});
-
 router.get('/api', function (req, res) {
 	res.json({ message: 'TODO: LIST OF APIS'});  
-});
-
-router.get('/profile', function (req, res) {
-  if(typeof req.user == 'undefined') {
-    res.redirect('/error/loginFailure');
-  } else {
-    res.json(req.user);
-  }
 });
 
 router.get('/error/loginFailure', function (req, res) {
