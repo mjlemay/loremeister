@@ -19,7 +19,9 @@ router.route('/:story_slug')
           if (err) {
             res.json(err);
           }
-          if (req.user) {
+          if (req.user &&
+            (req.user.is_admin === true ||
+              req.user._id === story.creator_id)) {
             _.forOwn(req.body, function(value, key) {
               story[key] = value;
             });
@@ -30,7 +32,9 @@ router.route('/:story_slug')
               res.json({ message: 'Story updated.' });
             });
           } else {
-            res.redirect('/error/loginFailure');
+            res.json({
+              message: 'Cannot modify tribe.'
+            });
           }
       });
   })

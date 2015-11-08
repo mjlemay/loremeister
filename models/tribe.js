@@ -12,9 +12,16 @@ var TribeSchema   = new Schema({
     enemies: String,
     inspirations: String,
     girth: String,
+    creator_id: String,
     leaders: [],
     connectedStories: [],
     connectedCharacters: []
+    },
+    {
+        timestamps: {
+            createdAt: 'created_at',
+            updatedAt: 'updated_at'
+        }
 });
 
 module.exports = mongoose.model('Tribe', TribeSchema);

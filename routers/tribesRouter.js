@@ -17,6 +17,7 @@ router.route('/')
     	    tribe.inspirations = req.body.inspirations;
     	    tribe.girth = req.body.girth;
           tribe.leaders = req.body.leaders;
+          tribe.creator_id = req.user._id;
 
           // save the bear and check for errors
           tribe.save(function(err) {

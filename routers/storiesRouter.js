@@ -15,7 +15,7 @@ router.route('/')
         story.published_at = req.body.publish_date;
         story.is_published = req.body.is_published;
         story.author = req.body.author;
-        story.creator = req.body.creator;
+        story.creator_id = req.user._id;
 
         // save the bear and check for errors
         story.save(function(err) {

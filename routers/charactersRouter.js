@@ -19,6 +19,7 @@ router.route('/')
     	    character.dislikes = req.body.dislikes;
     	    character.inspirations = req.body.inspirations;
     	    character.girth = req.body.girth;
+          character.creator_id = req.user._id;
 
           // save the bear and check for errors
           character.save(function(err) {

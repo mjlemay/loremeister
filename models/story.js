@@ -10,14 +10,15 @@ var StorySchema   = new Schema({
     body: String,
     published_at: Date,
     is_published: Boolean,
-    creator: String
-    },
-    {timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at'
-    },
+    creator_id: String,
     connectedCharacters: [],
     connectedTribes: []
+    },
+    {
+        timestamps: {
+            createdAt: 'created_at',
+            updatedAt: 'updated_at'
+        }
 });
 
 

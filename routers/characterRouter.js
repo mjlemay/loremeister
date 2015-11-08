@@ -18,15 +18,23 @@ router.route('/:character_slug')
           if (err) {
             res.json(err);
           }
-          _.forOwn(req.body, function(value, key) {
-            character[key] = value;
-          });
-          character.save(function(err) {
-            if (err) {
-              res.send(err);
-            }
-            res.json({ message: 'Character updated.' });
-          });
+          if (req.user &&
+            (req.user.is_admin === true ||
+              req.user._id === character.creator_id)) {
+            _.forOwn(req.body, function(value, key) {
+              character[key] = value;
+            });
+            character.save(function(err) {
+              if (err) {
+                res.send(err);
+              }
+              res.json({ message: 'Character updated.' });
+            });
+          } else {
+            res.json({
+              message: 'Cannot modify character.'
+            });
+          }
       });
   })
   .delete(function(req, res) {

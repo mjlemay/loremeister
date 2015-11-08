@@ -15,9 +15,15 @@ var CharacterSchema   = new Schema({
     dislikes: String,
     inspirations: String,
     girth: String,
-    creator: String,
+    creator_id: String,
     connectedStories: [],
     connectedTribes: []
+    },
+    {
+        timestamps: {
+            createdAt: 'created_at',
+            updatedAt: 'updated_at'
+        }
 });
 
 module.exports = mongoose.model('Character', CharacterSchema);
