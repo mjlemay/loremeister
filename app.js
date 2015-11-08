@@ -1,21 +1,19 @@
+//app.js
+//load required modules
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var passport = require('passport');
-var flash    = require('connect-flash');
-var morgan       = require('morgan');
+var flash = require('connect-flash');
+var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
-var session      = require('express-session');
+var session = require('express-session');
 
-var _ = require('lodash');
+//set app
 var app = express();
-var router = express.Router();
-var configDB = require('./config/db.js');
-
-/* Schemas listed Below */
-var Character = require('./models/character')(router);
 
 /* Routes Listed Here */
+var appRouter = require('./routers/appRouter');
 var storiesRouter = require('./routers/storiesRouter');
 var storyRouter = require('./routers/storyRouter');
 var charactersRouter = require('./routers/charactersRouter');
@@ -23,6 +21,7 @@ var characterRouter = require('./routers/characterRouter');
 var userRouter = require('./routers/userRouter');
 
 /* Loads a Mongo DB */
+var configDB = require('./config/db.js');
 mongoose.connect(configDB.url);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error.'));
@@ -31,45 +30,26 @@ db.once('open', function (callback) {
 });
 
 
-require('./config/passport')(passport); // pass passport for configuration
-
-// set up our express application
+// use configurations and dependences
+var configPass = require('./config/passport')(passport); // pass passport for configuration
+app.use(bodyParser.urlencoded({extended: true}));
+//used for express
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
-
 // required for passport
 app.use(session({ secret: 'ilovepineguinsyoushouldtoo' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-
-/* Begins routing! */
-router.use('/', function (req, res, next) {
-	next();
-});
-
-app.use(bodyParser.urlencoded({extended: true}));
-app.use('/', router);
-app.use('/api', router);
+/* APP LEVEL ROUTING TO ROUTE METHODS */
+app.use('/', appRouter);
 app.use('/api/stories', storiesRouter);
 app.use('/api/story', storyRouter);
 app.use('/api/characters', charactersRouter);
 app.use('/api/character', characterRouter);
 app.use('/user', userRouter);
-
-
-router.get('/', function (req, res) {
-	res.json({ message: 'LoreMiester API - Use /api to get a list of URIs'});  
-});
-
-router.get('/api', function (req, res) {
-	res.json({ message: 'TODO: LIST OF APIS'});  
-});
-
-router.get('/error/loginFailure', function (req, res) {
-  res.json({ error: 'Failed to Login'});
-});
+app.use('/error', userRouter);
 
 
 var server = app.listen(3000, function () {
