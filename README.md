@@ -5,6 +5,8 @@ Loremeister
 
 This is an API app that allows users to signup, login, and create characters, tribes, and share their stories via an JSON object interface.
 
+Loremeister runs on mongoDB, which you will need to install and run seperately: [MongoDB](https://www.mongodb.org/)
+
 
 How to Run and Install
 ----------------------
