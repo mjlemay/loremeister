@@ -24,11 +24,7 @@ var userRouter = require('./routers/userRouter');
 
 /* Loads a Mongo DB */
 var configDB = require('./config/db.js');
-if (typeof process.env.DB_CONF !== 'undefined') {
-	DBConfigURL = process.env.DB_CONF;
-} else {
-	DBConfigURL = configDB.url;gco
-}
+var DBConfigURL = (process.env.DB_CONF || configDB.url);
 mongoose.connect(DBConfigURL);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error.'));
