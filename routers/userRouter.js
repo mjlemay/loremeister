@@ -27,6 +27,16 @@ router.get('/auth/facebook/callback',
         failureRedirect: '/user/profile'
 }));
 
+router.get('/auth/google', passport.authenticate('google', { scope: ['email'] }));
+
+// handle the callback after facebook has authenticated the user
+router.get('/auth/google/callback',
+    passport.authenticate('google', {
+        successRedirect: '/user/profile',
+        failureRedirect: '/user/profile'
+}));
+
+
 router.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');

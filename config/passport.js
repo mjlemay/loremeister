@@ -2,6 +2,7 @@
 
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var User = require('../models/user');
 var configAuth = require('./auth');
 
@@ -105,7 +106,6 @@ module.exports = function(passport) {
     // facebook will send back the token and profile
     function(token, refreshToken, profile, done) {
     	var fbEmail = '';
-    	console.log(profile);
     	if (typeof profile.emails !== 'undefined' && profile.emails[0].value)  {
     		fbEmail = profile.emails[0].value;
     	}
@@ -158,8 +158,70 @@ module.exports = function(passport) {
                     // if successful, return the new user
                     return done(null, fbUser);
                 });
-
             });
         });
+    }));
+
+    /* Google OAuth Strat */
+    passport.use(new GoogleStrategy({
+
+        clientID        : configAuth.googleAuth.clientID,
+        clientSecret    : configAuth.googleAuth.clientSecret,
+        callbackURL     : configAuth.googleAuth.callbackURL,
+
+    },
+    function(token, refreshToken, profile, done) {
+        var gmail = '';
+        if (typeof profile.emails !== 'undefined' && profile.emails[0].value)  {
+            gmail = profile.emails[0].value;
+        }
+        process.nextTick(function() {
+            // try to find the user based on their google id
+            User.findOne({
+                $or: [
+                        {'logins.google.id': profile.id},
+                        {'logins.local.email': gmail}
+                ]
+            }, function(err, user) {
+               var gUser = {};
+               if (err) {
+                    return done(err);
+                }
+                if (user) {
+                    if (typeof user.logins.google !== 'undefined'
+                        && typeof user.logins.google.id !== 'undefined') {
+                        return done(null, user); // user found, return that user
+                    } else {
+                        gUser = user;
+                    }
+                } else {
+                    gUser = new User();
+                    gUser.logins.local.email = gmail;
+                }
+                // set all of the facebook information in our user model
+                gUser.logins.google.id    = profile.id; // set the users facebook id                   
+                gUser.logins.google.token = token; // we will save the token that facebook provides to the user                    
+                gUser.logins.google.name  = profile.displayName; // look at the passport user profile to see how names are returned
+                gUser.logins.google.email = gmail; // facebook can return multiple emails so we'll take the first // facebook can return multiple emails so we'll take the first
+
+                if (typeof profile.name.givenName !== undefined) {
+                    gUser.firstName = profile.name.givenName
+                }
+                if (typeof profile.name.familyName !== undefined) {
+                    gUser.lastName = profile.name.familyName
+                }
+
+                // save our user to the database
+                gUser.save(function(err) {
+                    if (err) {
+                        throw err;
+                    }
+
+                    // if successful, return the new user
+                    return done(null, gUser);
+                });
+            });
+        });
+
     }));
 };
