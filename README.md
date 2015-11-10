@@ -12,6 +12,8 @@ To run locally, please install node.js and **npm install** in the app directory.
 
 To run in an Hereoku container, set the heroku environment of **DB_CONF** to point to your mongoDB.
 
+For facebook and google OAUTH intergration, please update **/config/auth.js** 
+
 
 List of API Endpoints
 ----------------------
@@ -19,7 +21,7 @@ List of API Endpoints
 | URI | METHOD | DESCRIPTION |
 | --- | --- | --- |
 | **/user/signup** | POST | Creates a user |
-| **/user/login** | GET | Allows a user to login to create, edit, and delete thier own posts |
+| **/user/login** | POST | Allows a user to login to create, edit, and delete thier own posts |
 | **/user/profile** | GET | Returns a user object |
 | **/api** | GET | Lists all existing API endpoints. |
 | **/api/stories** | GET | Returns an array of story objects |
