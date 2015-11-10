@@ -18,9 +18,22 @@ List of API Endpoints
 
 | URI | METHOD | DESCRIPTION |
 | --- | --- | --- |
-| **/api ** | GET | Lists all existing API endpoints. |
+| **/user/signup** | POST | Creates a user |
+| **/user/login** | GET | Allows a user to login to create, edit, and delete thier own posts |
+| **/user/profile** | GET | Returns a user object |
+| **/api** | GET | Lists all existing API endpoints. |
 | **/api/stories** | GET | Returns an array of story objects |
 |   | POST | Creates a story |
-| **/api/story/[story_slug]** | GET | Returns an single story |
+| **/api/story/[story_slug]** | GET | Returns an single story by slug |
 |   | PUT | Updates an existing story |
 |   | DELETE | Removes an existing story |
+| **/api/characters** | GET | Returns an array of character objects |
+|   | POST | Creates a story |
+| **/api/story/[character_slug]** | GET | Returns an single character by slug |
+|   | PUT | Updates an existing character |
+|   | DELETE | Removes an existing character |
+| **/api/tribes** | GET | Returns an array of story objects |
+|   | POST | Creates a tribe |
+| **/api/tribe/[tribe_slug]** | GET | Returns an single tribe |
+|   | PUT | Updates an existing tribe |
+|   | DELETE | Removes an existing tribe |
