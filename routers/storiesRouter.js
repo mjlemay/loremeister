@@ -18,20 +18,18 @@ router.route('/')
         story.creator_id = req.user._id;
 
         // save and check for errors
-        console.log(story.slug)
         Story.findOne({slug: story.slug}, function(err, existingStory) {
           if (existingStory && existingStory.slug == story.slug) {
             res.json({ message: 'Error: Story slug already exists!' });
           } else {
             story.save(function(err) {
-                if (err)
-                {
+                if (err) {
                   res.json({ message: err});
                 }
                 res.json({ message: 'Story created!' });
             });
           }
-        }).exec();
+        });
       } else {
         res.redirect('/error/loginFailure');
       }

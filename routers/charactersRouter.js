@@ -21,11 +21,18 @@ router.route('/')
     	    character.girth = req.body.girth;
           character.creator_id = req.user._id;
 
-          // save the bear and check for errors
-          character.save(function(err) {
-              if (err)
+          // save and check for errors
+          Character.findOne({slug: character.slug}, function(err, existingCharacter) {
+            if (existingCharacter && existingCharacter.slug == character.slug) {
+              res.json({ message: 'Error: Character slug already exists!' });
+            } else {
+              character.save(function(err) {
+                if (err) {
                   res.send(err);
-              res.json({ message: 'Character created!' });
+                }
+                res.json({ message: 'Character created!' });
+              });
+            }
           });
         } else {
           res.redirect('/error/loginFailure');

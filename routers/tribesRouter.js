@@ -19,11 +19,18 @@ router.route('/')
           tribe.leaders = req.body.leaders;
           tribe.creator_id = req.user._id;
 
-          // save the bear and check for errors
-          tribe.save(function(err) {
-              if (err)
-                  res.send(err);
-              res.json({ message: 'Tribe created!' });
+          // save and check for errors
+          Tribe.findOne({slug: tribe.slug}, function(err, existingTribe) {
+            if (existingTribe && existingTribe.slug == tribe.slug) {
+              res.json({ message: 'Error: Tribe slug already exists!' });
+            } else {
+              tribe.save(function(err) {
+                  if (err) {
+                      res.send(err);
+                  }
+                  res.json({ message: 'Tribe created!' });
+              });
+            }
           });
         } else {
           res.redirect('/error/loginFailure');
