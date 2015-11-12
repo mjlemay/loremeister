@@ -1,11 +1,11 @@
 // app/models/story.js
 
-var mongoose     = require('mongoose');
-var Schema       = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var StorySchema   = new Schema({
+var StorySchema = new Schema({
     title: String,
-    slug: String,
+    slug: {type: String, index: true, unique: true, required: true},
     summary: String,
     body: String,
     published_at: Date,
@@ -20,6 +20,5 @@ var StorySchema   = new Schema({
             updatedAt: 'updated_at'
         }
 });
-
 
 module.exports = mongoose.model('Story', StorySchema);

@@ -17,12 +17,21 @@ router.route('/')
         story.author = req.body.author;
         story.creator_id = req.user._id;
 
-        // save the bear and check for errors
-        story.save(function(err) {
-            if (err)
-                res.send(err);
-            res.json({ message: 'Story created!' });
-        });
+        // save and check for errors
+        console.log(story.slug)
+        Story.findOne({slug: story.slug}, function(err, existingStory) {
+          if (existingStory && existingStory.slug == story.slug) {
+            res.json({ message: 'Error: Story slug already exists!' });
+          } else {
+            story.save(function(err) {
+                if (err)
+                {
+                  res.json({ message: err});
+                }
+                res.json({ message: 'Story created!' });
+            });
+          }
+        }).exec();
       } else {
         res.redirect('/error/loginFailure');
       }
