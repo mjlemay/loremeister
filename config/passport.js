@@ -34,7 +34,7 @@ module.exports = function(passport) {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
+        User.findOne({ 'logins.local.email' :  email }, function(err, user) {
             // if there are any errors, return the error
             if (err)
                 return done(err);
@@ -43,11 +43,9 @@ module.exports = function(passport) {
             if (user) {
                 return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
             } else {
-            	console.log('email', email);
                 // if there is no user with that email
                 // create the user
                 var newUser = new User();
-                console.log(newUser);
                 newUser.logins.local.email = email;
                 newUser.logins.local.password = newUser.generateHash(password);
 
@@ -74,7 +72,7 @@ module.exports = function(passport) {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
+        User.findOne({ 'logins.local.email' :  email }, function(err, user) {
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);

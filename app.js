@@ -21,6 +21,7 @@ var characterRouter = require('./routers/characterRouter');
 var tribeRouter = require('./routers/tribeRouter');
 var tribesRouter = require('./routers/tribesRouter');
 var userRouter = require('./routers/userRouter');
+var errorRouter = require('./routers/errorRouter');
 
 /* Loads a Mongo DB */
 var configDB = require('./config/db.js');
@@ -54,7 +55,7 @@ app.use('/api/character', characterRouter);
 app.use('/api/tribes', tribesRouter);
 app.use('/api/tribe', tribeRouter);
 app.use('/user', userRouter);
-app.use('/error', userRouter);
+app.use('/error', errorRouter);
 
 
 var server = app.listen((process.env.PORT || 3000), function () {
