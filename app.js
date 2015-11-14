@@ -25,10 +25,13 @@ var userRouter = require('./routers/userRouter');
 var errorRouter = require('./routers/errorRouter');
 
 /* Loads a Mongo DB */
-var configDB;
-console.log(appEnvironment);
+var configDB, doesExist;
 if (appEnvironment === 'development' || typeof appEnvironment === 'undefined') {
-	configDB = require('./config/localhost/db.js');
+	try {
+    	configDB = require('./config/localhost/db.js');
+	} catch (e) {
+    	configDB = require('./config/db.js');
+	}
 } else {
 	configDB = require('./config/db.js');
 }

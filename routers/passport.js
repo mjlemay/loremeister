@@ -7,7 +7,11 @@ var User = require('../models/user');
 var appEnvironment = process.env.NODE_ENV;
 var configAuth;
 if (appEnvironment === 'development' || typeof appEnvironment === 'undefined') {
-    configAuth = require('../config/localhost/auth');
+    try {
+        configAuth = require('../config/localhost/auth');
+    } catch (e) {
+        configAuth = require('../config/auth');
+    }
 } else {
     configAuth = require('../config/auth');
 }
