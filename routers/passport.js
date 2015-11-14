@@ -4,7 +4,13 @@ var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var User = require('../models/user');
-var configAuth = require('./auth');
+var appEnvironment = process.env.NODE_ENV;
+var configAuth;
+if (appEnvironment === 'development' || typeof appEnvironment === 'undefined') {
+    configAuth = require('../config/localhost/auth');
+} else {
+    configAuth = require('../config/auth');
+}
 
 module.exports = function(passport) {
     // used to serialize the user for the session
@@ -98,7 +104,8 @@ module.exports = function(passport) {
         clientID        : configAuth.facebookAuth.clientID,
         clientSecret    : configAuth.facebookAuth.clientSecret,
         callbackURL     : configAuth.facebookAuth.callbackURL,
-        profileFields	: ['id','displayName','email', 'name']
+        profileFields	: ['id','displayName','email', 'name'],
+        proxy: true
     },
 
     // facebook will send back the token and profile
@@ -166,7 +173,7 @@ module.exports = function(passport) {
         clientID        : configAuth.googleAuth.clientID,
         clientSecret    : configAuth.googleAuth.clientSecret,
         callbackURL     : configAuth.googleAuth.callbackURL,
-
+        proxy: true
     },
     function(token, refreshToken, profile, done) {
         var gmail = '';

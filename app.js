@@ -11,6 +11,7 @@ var session = require('express-session');
 
 //set app
 var app = express();
+var appEnvironment = process.env.NODE_ENV;
 
 /* Routes Listed Here */
 var appRouter = require('./routers/appRouter');
@@ -24,8 +25,14 @@ var userRouter = require('./routers/userRouter');
 var errorRouter = require('./routers/errorRouter');
 
 /* Loads a Mongo DB */
-var configDB = require('./config/db.js');
-var DBConfigURL = (process.env.DB_CONF || configDB.url);
+var configDB;
+console.log(appEnvironment);
+if (appEnvironment === 'development' || typeof appEnvironment === 'undefined') {
+	configDB = require('./config/localhost/db.js');
+} else {
+	configDB = require('./config/db.js');
+}
+var DBConfigURL = configDB.url;
 mongoose.connect(DBConfigURL);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error.'));
@@ -35,7 +42,7 @@ db.once('open', function (callback) {
 
 
 // use configurations and dependences
-var configPass = require('./config/passport')(passport); // pass passport for configuration
+var configPass = require('./routers/passport')(passport); // pass passport for configuration
 app.use(bodyParser.urlencoded({extended: true}));
 //used for express
 app.use(morgan('dev')); // log every request to the console
