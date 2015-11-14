@@ -8,6 +8,7 @@ var flash = require('connect-flash');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var favicon = require('serve-favicon');
 
 //set app
 var app = express();
@@ -46,6 +47,7 @@ db.once('open', function (callback) {
 
 // use configurations and dependences
 var configPass = require('./routers/passport')(passport); // pass passport for configuration
+app.use(favicon(__dirname + '/favicon.ico'));
 app.use(bodyParser.urlencoded({extended: true}));
 //used for express
 app.use(morgan('dev')); // log every request to the console
