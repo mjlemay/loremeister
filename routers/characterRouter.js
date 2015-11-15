@@ -9,7 +9,7 @@ var _ = require('lodash');
 router.route('/:character_slug')
   .get(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
-          if (err) {
+          if (err || character == null) {
             res.json(err);
           }
           res.json(character);
@@ -17,7 +17,7 @@ router.route('/:character_slug')
   })
   .put(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
-          if (err) {
+          if (err || character === null) {
             res.json(err);
           }
           if (req.user &&
@@ -42,7 +42,7 @@ router.route('/:character_slug')
   .delete(function(req, res) {
             if (req.user) {
         Character.findOne({slug: req.params.character_slug}, function(err, character) {
-          if (err) {
+          if (err || character === null) {
             res.json(err);
           } else {
             if (req.user.is_admin === true ||
@@ -71,7 +71,7 @@ router.route('/:character_slug')
 router.route('/connect/:character_slug/tribe/:tribe_slug')
   .put(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
-          if (err) {
+          if (err || character === null) {
             res.json(err);
           }
           console.log('character found to edit');
@@ -101,7 +101,7 @@ router.route('/connect/:character_slug/tribe/:tribe_slug')
   })
   .delete(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
-          if (err) {
+          if (err || character === null) {
             res.json(err);
           }
           if (req.user &&
@@ -125,14 +125,14 @@ router.route('/connect/:character_slug/tribe/:tribe_slug')
 router.route('/connect/:character_slug/story/:story_slug')
   .put(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
-          if (err) {
+          if (err || character === null) {
             res.json(err);
           }
           if (req.user &&
             (req.user.is_admin === true ||
               req.user._id === character.creator_id)) {
              Story.findOne({slug: req.params.story_slug}, function(err, story) {
-                if (err) {
+                if (err || character == null) {
                   res.json(err);
                 }  
                   if (_.indexOf(character.connectedStories, req.params.story_slug) === -1){
@@ -154,7 +154,7 @@ router.route('/connect/:character_slug/story/:story_slug')
   })
   .delete(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
-          if (err) {
+          if (err || character === null) {
             res.json(err);
           }
           if (req.user &&

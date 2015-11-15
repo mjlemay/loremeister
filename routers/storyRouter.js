@@ -10,7 +10,7 @@ var _ = require('lodash');
 router.route('/:story_slug')
   .get(function(req, res) {
       Story.findOne({slug: req.params.story_slug}, function(err, story) {
-          if (err) {
+          if (err || story == null) {
             res.json(err);
           }
           res.json(story);
@@ -18,7 +18,7 @@ router.route('/:story_slug')
   })
   .put(function(req, res) {
       Story.findOne({slug: req.params.story_slug}, function(err, story) {
-          if (err) {
+          if (err || story == null) {
             res.json(err);
           }
           if (req.user &&
@@ -43,7 +43,7 @@ router.route('/:story_slug')
   .delete(function(req, res) {
       if (req.user) {
         Story.findOne({slug: req.params.story_slug}, function(err, story) {
-          if (err) {
+          if (err || story == null) {
             res.json(err);
           } else {
             if (req.user.is_admin === true ||
@@ -73,7 +73,7 @@ router.route('/:story_slug')
 router.route('/connect/:story_slug/character/:character_slug')
   .put(function(req, res) {
       Story.findOne({slug: req.params.story_slug}, function(err, story) {
-          if (err) {
+          if (err || story == null) {
             res.json(err);
           }
           if (req.user &&
@@ -102,7 +102,7 @@ router.route('/connect/:story_slug/character/:character_slug')
   })
   .delete(function(req, res) {
       Story.findOne({slug: req.params.story_slug}, function(err, story) {
-          if (err) {
+          if (err || story == null) {
             res.json(err);
           }
           if (req.user &&
@@ -127,7 +127,7 @@ router.route('/connect/:story_slug/character/:character_slug')
 router.route('/connect/:story_slug/tribe/:tribe_slug')
   .put(function(req, res) {
       Story.findOne({slug: req.params.story_slug}, function(err, story) {
-          if (err) {
+          if (err || story == null) {
             res.json(err);
           }
           if (req.user &&
@@ -156,7 +156,7 @@ router.route('/connect/:story_slug/tribe/:tribe_slug')
   })
   .delete(function(req, res) {
       Story.findOne({slug: req.params.story_slug}, function(err, story) {
-          if (err) {
+          if (err || story == null) {
             res.json(err);
           }
           if (req.user &&
