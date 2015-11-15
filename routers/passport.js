@@ -58,7 +58,7 @@ module.exports = function(passport) {
                 var newUser = new User();
                 newUser.logins.local.email = email;
                 newUser.logins.local.password = newUser.generateHash(password);
-
+                
                 User.count(function(err, c) {
                     console.log('number of users is:' +c);
                     if (c <= 0) {

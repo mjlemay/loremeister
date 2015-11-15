@@ -37,6 +37,42 @@ router.get('/auth/google/callback',
 }));
 
 
+router.route('/admin/:user_id').put(function(req, res) {
+      User.findById(req.params.user_id,  function(err, foundUser) {
+         if (req.user &&
+            (req.user.is_admin === true)) {
+            foundUser.is_admin = true;
+            foundUser.save(function(err) {
+              if (err) {
+                res.send(err);
+              }
+              res.json({ message: 'User updated to Admin.' });
+            });
+          } else {
+            res.json({
+              message: 'Cannot modify user.'
+            });
+          }
+      });
+  }).delete(function(req, res) {
+    User.findById(req.params.user_id,  function(err, foundUser) {
+         if (req.user &&
+            (req.user.is_admin === true)) {
+            foundUser.is_admin = false;
+            foundUser.save(function(err) {
+              if (err) {
+                res.send(err);
+              }
+              res.json({ message: 'User removed from Admin.' });
+            });
+          } else {
+            res.json({
+              message: 'Cannot modify user.'
+            });
+          }
+      });
+  });
+
 router.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
