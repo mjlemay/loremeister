@@ -59,11 +59,18 @@ module.exports = function(passport) {
                 newUser.logins.local.email = email;
                 newUser.logins.local.password = newUser.generateHash(password);
 
-                // save the user
-                newUser.save(function(err) {
-                    if (err)
-                        throw err;
-                    return done(null, newUser);
+                User.count(function(err, c) {
+                    console.log('number of users is:' +c);
+                    if (c <= 0) {
+                        newUser.is_admin = true;
+                    };
+                }).exec(function() {
+                    //save the user
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
                 });
             }
 

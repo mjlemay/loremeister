@@ -14,6 +14,8 @@ To run locally, please install node.js and **npm install** in the app directory.
 
 To run in an Hereoku container, set the heroku environment of **DB_CONF** to point to your mongoDB.
 
+To create an admin signup via email. The first created account is always set as admin by default.
+
 For facebook and google OAUTH intergration, please update **/config/auth.js** 
 
 
