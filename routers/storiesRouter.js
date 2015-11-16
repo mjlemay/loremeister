@@ -20,13 +20,13 @@ router.route('/')
         // save and check for errors
         Story.findOne({slug: story.slug}, function(err, existingStory) {
           if (existingStory && existingStory.slug == story.slug) {
-            res.json({ message: 'Error: Story slug already exists!' });
+            res.jsonp({ message: 'Error: Story slug already exists!' });
           } else {
             story.save(function(err) {
                 if (err) {
-                  res.json({ message: err});
+                  res.jsonp({ message: err});
                 }
-                res.json({ message: 'Story created!' });
+                res.jsonp({ message: 'Story created!' });
             });
           }
         });
@@ -40,7 +40,7 @@ router.route('/')
           if (err) {
             res.send(err);
           }
-          res.json(stories);
+          res.jsonp(stories);
         });
 
     });

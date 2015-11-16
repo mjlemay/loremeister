@@ -10,15 +10,15 @@ router.route('/:character_slug')
   .get(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
           if (err || character == null) {
-            res.json(err);
+            res.jsonp(err);
           }
-          res.json(character);
+          res.jsonp(character);
       });
   })
   .put(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
           if (err || character === null) {
-            res.json(err);
+            res.jsonp(err);
           }
           if (req.user &&
             (req.user.is_admin === true ||
@@ -30,10 +30,10 @@ router.route('/:character_slug')
               if (err) {
                 res.send(err);
               }
-              res.json({ message: 'Character updated.' });
+              res.jsonp({ message: 'Character updated.' });
             });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify character.'
             });
           }
@@ -43,7 +43,7 @@ router.route('/:character_slug')
             if (req.user) {
         Character.findOne({slug: req.params.character_slug}, function(err, character) {
           if (err || character === null) {
-            res.json(err);
+            res.jsonp(err);
           } else {
             if (req.user.is_admin === true ||
               req.user._id.toString() === character.creator_id) {
@@ -51,20 +51,20 @@ router.route('/:character_slug')
                 if (err) {
                   res.send(err);
                 } else {
-                  res.json({
+                  res.jsonp({
                     message: 'Character deleted.'
                   });
                 }
               });
             } else {
-              res.json({
+              res.jsonp({
                 message: 'Cannot delete story.'
               });
             }
           }
         });
       } else {
-        res.json({ error: 'Failed to Login.'});
+        res.jsonp({ error: 'Failed to Login.'});
       }
   });
 
@@ -72,7 +72,7 @@ router.route('/connect/:character_slug/tribe/:tribe_slug')
   .put(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
           if (err || character === null) {
-            res.json(err);
+            res.jsonp(err);
           }
           console.log('character found to edit');
           if (req.user &&
@@ -80,7 +80,7 @@ router.route('/connect/:character_slug/tribe/:tribe_slug')
               req.user._id === character.creator_id)) {
              Tribe.findOne({slug: req.params.tribe_slug}, function(err, tribe) {
                 if (err) {
-                  res.json(err);
+                  res.jsonp(err);
                 }  
                   if (_.indexOf(character.connectedTribes, req.params.tribe_slug) === -1){
                     character.connectedTribes.push(req.params.tribe_slug);
@@ -89,11 +89,11 @@ router.route('/connect/:character_slug/tribe/:tribe_slug')
                     if (err) {
                       res.send(err);
                     }
-                    res.json({ message: 'Story connection updated.' });
+                    res.jsonp({ message: 'Story connection updated.' });
                   });
             });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify story.'
             });
           }
@@ -102,7 +102,7 @@ router.route('/connect/:character_slug/tribe/:tribe_slug')
   .delete(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
           if (err || character === null) {
-            res.json(err);
+            res.jsonp(err);
           }
           if (req.user &&
             (req.user.is_admin === true ||
@@ -112,10 +112,10 @@ router.route('/connect/:character_slug/tribe/:tribe_slug')
                 if (err) {
                   res.send(err);
                 }
-                res.json({ message: 'Story connection removed.' });
+                res.jsonp({ message: 'Story connection removed.' });
               });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify story.'
             });
           }
@@ -126,14 +126,14 @@ router.route('/connect/:character_slug/story/:story_slug')
   .put(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
           if (err || character === null) {
-            res.json(err);
+            res.jsonp(err);
           }
           if (req.user &&
             (req.user.is_admin === true ||
               req.user._id === character.creator_id)) {
              Story.findOne({slug: req.params.story_slug}, function(err, story) {
                 if (err || character == null) {
-                  res.json(err);
+                  res.jsonp(err);
                 }  
                   if (_.indexOf(character.connectedStories, req.params.story_slug) === -1){
                     character.connectedStories.push(req.params.story_slug);
@@ -142,11 +142,11 @@ router.route('/connect/:character_slug/story/:story_slug')
                     if (err) {
                       res.send(err);
                     }
-                    res.json({ message: 'Story connection updated.' });
+                    res.jsonp({ message: 'Story connection updated.' });
                   });
             });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify story.'
             });
           }
@@ -155,7 +155,7 @@ router.route('/connect/:character_slug/story/:story_slug')
   .delete(function(req, res) {
       Character.findOne({slug: req.params.character_slug}, function(err, character) {
           if (err || character === null) {
-            res.json(err);
+            res.jsonp(err);
           }
           if (req.user &&
             (req.user.is_admin === true ||
@@ -165,10 +165,10 @@ router.route('/connect/:character_slug/story/:story_slug')
                 if (err) {
                   res.send(err);
                 }
-                res.json({ message: 'Story connection removed.' });
+                res.jsonp({ message: 'Story connection removed.' });
               });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify story.'
             });
           }

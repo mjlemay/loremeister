@@ -3,11 +3,11 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function (req, res) {
-	res.json({ message: 'LoreMiester API - Use /api to get a list of URIs'});  
+	res.jsonp({ message: 'LoreMiester API - Use /api to get a list of URIs'});  
 });
 
 router.get('/:api', function (req, res) {
-	res.json([
+	res.jsonp([
 		{
 		uri: '/user/signup',
 		info: [{

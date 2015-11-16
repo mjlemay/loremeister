@@ -10,15 +10,15 @@ router.route('/:tribe_slug')
   .get(function(req, res) {
       Tribe.findOne({slug: req.params.tribe_slug}, function(err, tribe) {
           if (err || tribe  === null) {
-            res.json(err);
+            res.jsonp(err);
           }
-          res.json(tribe);
+          res.jsonp(tribe);
       });
   })
   .put(function(req, res) {
       Tribe.findOne({slug: req.params.tribe_slug}, function(err, tribe) {
           if (err || tribe  === null) {
-            res.json(err);
+            res.jsonp(err);
           }
           if (req.user &&
             (req.user.is_admin === true ||
@@ -30,10 +30,10 @@ router.route('/:tribe_slug')
               if (err) {
                 res.send(err);
               }
-              res.json({ message: 'Tribe updated.' });
+              res.jsonp({ message: 'Tribe updated.' });
             });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify tribe.'
             });
           }
@@ -43,7 +43,7 @@ router.route('/:tribe_slug')
       if (req.user) {
         Tribe.findOne({slug: req.params.tribe_slug}, function(err, tribe) {
           if (err || tribe  === null) {
-            res.json(err);
+            res.jsonp(err);
           } else {
             if (req.user.is_admin === true ||
               req.user._id.toString() === tribe.creator_id) {
@@ -52,20 +52,20 @@ router.route('/:tribe_slug')
                   res.send(err);
                 } else {
 
-                  res.json({
+                  res.jsonp({
                     message: 'Tribe deleted.'
                   });
                 }
               });
             } else {
-              res.json({
+              res.jsonp({
                 message: 'Cannot delete tribe.'
               });
             }
           }
         });
       } else {
-        res.json({ error: 'Failed to Login.'});
+        res.jsonp({ error: 'Failed to Login.'});
       }
   });
 
@@ -74,14 +74,14 @@ router.route('/connect/:tribe_slug/story/:story_slug')
   .put(function(req, res) {
       Tribe.findOne({slug: req.params.tribe_slug}, function(err, tribe) {
           if (err || tribe  === null) {
-            res.json(err);
+            res.jsonp(err);
           }
           if (req.user &&
             (req.user.is_admin === true ||
               req.user._id === tribe.creator_id)) {
              Story.findOne({slug: req.params.story_slug}, function(err, story) {
                 if (err) {
-                  res.json(err);
+                  res.jsonp(err);
                 }  
                   if (_.indexOf(tribe.connectedStories, req.params.story_slug) === -1){
                     tribe.connectedStories.push(req.params.story_slug);
@@ -90,11 +90,11 @@ router.route('/connect/:tribe_slug/story/:story_slug')
                     if (err) {
                       res.send(err);
                     }
-                    res.json({ message: 'Story connection updated.' });
+                    res.jsonp({ message: 'Story connection updated.' });
                   });
             });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify story.'
             });
           }
@@ -103,7 +103,7 @@ router.route('/connect/:tribe_slug/story/:story_slug')
   .delete(function(req, res) {
       Tribe.findOne({slug: req.params.character_slug}, function(err, tribe) {
           if (err || tribe  === null) {
-            res.json(err);
+            res.jsonp(err);
           }
           if (req.user &&
             (req.user.is_admin === true ||
@@ -113,10 +113,10 @@ router.route('/connect/:tribe_slug/story/:story_slug')
                 if (err) {
                   res.send(err);
                 }
-                res.json({ message: 'Tribe connection removed.' });
+                res.jsonp({ message: 'Tribe connection removed.' });
               });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify tribe.'
             });
           }
@@ -128,14 +128,14 @@ router.route('/connect/:tribe_slug/character/:character_slug')
   .put(function(req, res) {
       Tribe.findOne({slug: req.params.tribe_slug}, function(err, tribe) {
           if (err || tribe  === null) {
-            res.json(err);
+            res.jsonp(err);
           }
           if (req.user &&
             (req.user.is_admin === true ||
               req.user._id === tribe.creator_id)) {
              Character.findOne({slug: req.params.character_slug}, function(err, character) {
                 if (err || character  === null) {
-                  res.json(err);
+                  res.jsonp(err);
                 }  
                   if (_.indexOf(tribe.connectedCharacters, req.params.character_slug) === -1){
                     tribe.connectedCharacters.push(req.params.character_slug);
@@ -144,11 +144,11 @@ router.route('/connect/:tribe_slug/character/:character_slug')
                     if (err) {
                       res.send(err);
                     }
-                    res.json({ message: 'Tribe connection updated.' });
+                    res.jsonp({ message: 'Tribe connection updated.' });
                   });
             });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify tribe.'
             });
           }
@@ -157,7 +157,7 @@ router.route('/connect/:tribe_slug/character/:character_slug')
   .delete(function(req, res) {
       Tribe.findOne({slug: req.params.tribe_slug}, function(err, tribe) {
           if (err || tribe  === null) {
-            res.json(err);
+            res.jsonp(err);
           }
           if (req.user &&
             (req.user.is_admin === true ||
@@ -167,10 +167,10 @@ router.route('/connect/:tribe_slug/character/:character_slug')
                 if (err) {
                   res.send(err);
                 }
-                res.json({ message: 'Tribe connection removed.' });
+                res.jsonp({ message: 'Tribe connection removed.' });
               });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify tribe.'
             });
           }

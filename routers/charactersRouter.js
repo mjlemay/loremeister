@@ -24,13 +24,13 @@ router.route('/')
           // save and check for errors
           Character.findOne({slug: character.slug}, function(err, existingCharacter) {
             if (existingCharacter && existingCharacter.slug == character.slug) {
-              res.json({ message: 'Error: Character slug already exists!' });
+              res.jsonp({ message: 'Error: Character slug already exists!' });
             } else {
               character.save(function(err) {
                 if (err) {
                   res.send(err);
                 }
-                res.json({ message: 'Character created!' });
+                res.jsonp({ message: 'Character created!' });
               });
             }
           });
@@ -43,7 +43,7 @@ router.route('/')
           if (err) {
             res.send(err);
           }
-          res.json(characters);
+          res.jsonp(characters);
         });
     })
 module.exports = router;

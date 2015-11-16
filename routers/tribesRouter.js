@@ -22,13 +22,13 @@ router.route('/')
           // save and check for errors
           Tribe.findOne({slug: tribe.slug}, function(err, existingTribe) {
             if (existingTribe && existingTribe.slug == tribe.slug) {
-              res.json({ message: 'Error: Tribe slug already exists!' });
+              rest.jsonp({ message: 'Error: Tribe slug already exists!' });
             } else {
               tribe.save(function(err) {
                   if (err) {
                       res.send(err);
                   }
-                  res.json({ message: 'Tribe created!' });
+                  rest.jsonp({ message: 'Tribe created!' });
               });
             }
           });
@@ -41,7 +41,7 @@ router.route('/')
           if (err) {
             res.send(err);
           }
-          res.json(tribes);
+          rest.jsonp(tribes);
         });
     })
 module.exports = router;

@@ -46,10 +46,10 @@ router.route('/admin/:user_id').put(function(req, res) {
               if (err) {
                 res.send(err);
               }
-              res.json({ message: 'User updated to Admin.' });
+              res.jsonp({ message: 'User updated to Admin.' });
             });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify user.'
             });
           }
@@ -63,10 +63,10 @@ router.route('/admin/:user_id').put(function(req, res) {
               if (err) {
                 res.send(err);
               }
-              res.json({ message: 'User removed from Admin.' });
+              res.jsonp({ message: 'User removed from Admin.' });
             });
           } else {
-            res.json({
+            res.jsonp({
               message: 'Cannot modify user.'
             });
           }
@@ -82,7 +82,7 @@ router.get('/profile', function (req, res) {
   if(typeof req.user == 'undefined') {
     res.redirect('/error/loginFailure');
   } else {
-    res.json(req.user);
+    res.jsonp(req.user);
   }
 });
 
