@@ -9,7 +9,7 @@ router.route('/')
         if (req.user) {
           var tribe = new Tribe(); 
           tribe.name = req.body.name.replace(/"/g, '\\\\\"');
-          tribe.slug = encodeURI(req.body.name);
+          tribe.slug = encodeURI(req.body.name.replace(/\s/g, '_'));
     	    tribe.origin = req.body.origin.replace(/"/g, '\\\\\"');
     	    tribe.background = req.body.background.replace(/"/g, '\\\\\"');
     	    tribe.allies = req.body.allies.replace(/"/g, '\\\\\"');

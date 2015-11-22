@@ -10,6 +10,7 @@ var _ = require('lodash');
 router.route('/:story_slug')
   .get(function(req, res) {
       Story.findOne({slug: req.params.story_slug}, function(err, story) {
+          console.log('found: ' + req.params.story_slug);
           if (err || story == null) {
             res.jsonp(err);
           }
@@ -26,7 +27,7 @@ router.route('/:story_slug')
               req.user._id === story.creator_id)) {
             _.forOwn(req.body, function(value, key) {
               if (story[key] == 'slug') {
-                value = encodeURI(value);
+                value = encodeURI(value.replace(/\s/g, '_'));
               }
               story[key] = value;
             });

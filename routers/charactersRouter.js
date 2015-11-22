@@ -9,7 +9,7 @@ router.route('/')
         if (req.user) {
           var character = new Character();      // create a new instance of the Character model
           character.name = req.body.name.replace(/"/g, '\\\\\"');
-          character.slug = encodeURI(req.body.name);
+          character.slug = encodeURI(req.body.name.replace(/\s/g, '_'));
     	    character.origin = req.body.origin.replace(/"/g, '\\\\\"');
     	    character.background = req.body.background.replace(/"/g, '\\\\\"');
     	    character.strength = req.body.strength.replace(/"/g, '\\\\\"');

@@ -28,7 +28,7 @@ router.route('/:character_slug')
               req.user._id === character.creator_id)) {
             _.forOwn(req.body, function(value, key) {
               if (character[key] == 'slug') {
-                value = encodeURI(value);
+                value = encodeURI(value.replace(/' '/g, '_'));
               }
               character[key] = value.replace(/"/g, '\\\\\"');
             });
