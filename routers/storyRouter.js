@@ -25,6 +25,9 @@ router.route('/:story_slug')
             (req.user.is_admin === true ||
               req.user._id === story.creator_id)) {
             _.forOwn(req.body, function(value, key) {
+              if (story[key] == 'slug') {
+                value = encodeURI(value);
+              }
               story[key] = value;
             });
             story.save(function(err) {

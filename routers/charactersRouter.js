@@ -8,17 +8,17 @@ router.route('/')
     .post(function(req, res) {
         if (req.user) {
           var character = new Character();      // create a new instance of the Character model
-          character.name = req.body.name;
-          character.slug = encodeURI(req.body.name.split(' ').join('_'));
-    	    character.origin = req.body.origin;
-    	    character.background = req.body.background;
-    	    character.strength = req.body.strength;
-    	    character.weakness = req.body.weakness;
-    	    character.goals = req.body.goals;
-    	    character.likes = req.body.likes;
-    	    character.dislikes = req.body.dislikes;
-    	    character.inspirations = req.body.inspirations;
-    	    character.girth = req.body.girth;
+          character.name = req.body.name.replace(/"/g, '\\\\\"');
+          character.slug = encodeURI(req.body.name);
+    	    character.origin = req.body.origin.replace(/"/g, '\\\\\"');
+    	    character.background = req.body.background.replace(/"/g, '\\\\\"');
+    	    character.strength = req.body.strength.replace(/"/g, '\\\\\"');
+    	    character.weakness = req.body.weakness.replace(/"/g, '\\\\\"');
+    	    character.goals = req.body.goals.replace(/"/g, '\\\\\"');
+    	    character.likes = req.body.likes.replace(/"/g, '\\\\\"');
+    	    character.dislikes = req.body.dislikes.replace(/"/g, '\\\\\"');
+    	    character.inspirations = req.body.inspirations.replace(/"/g, '\\\\\"');
+    	    character.girth = req.body.girth.replace(/"/g, '\\\\\"');
           character.creator_id = req.user._id;
 
           // save and check for errors

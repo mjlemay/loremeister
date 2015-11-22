@@ -8,15 +8,15 @@ router.route('/')
     .post(function(req, res) {
         if (req.user) {
           var tribe = new Tribe(); 
-          tribe.name = req.body.name;
-          tribe.slug = encodeURI(req.body.name.split(' ').join('_'));
-    	    tribe.origin = req.body.origin;
-    	    tribe.background = req.body.background;
-    	    tribe.allies = req.body.allies;
-    	    tribe.enemies = req.body.allies;
-    	    tribe.inspirations = req.body.inspirations;
-    	    tribe.girth = req.body.girth;
-          tribe.leaders = req.body.leaders;
+          tribe.name = req.body.name.replace(/"/g, '\\\\\"');
+          tribe.slug = encodeURI(req.body.name);
+    	    tribe.origin = req.body.origin.replace(/"/g, '\\\\\"');
+    	    tribe.background = req.body.background.replace(/"/g, '\\\\\"');
+    	    tribe.allies = req.body.allies.replace(/"/g, '\\\\\"');
+    	    tribe.enemies = req.body.allies.replace(/"/g, '\\\\\"');
+    	    tribe.inspirations = req.body.inspirations.replace(/"/g, '\\\\\"');
+    	    tribe.girth = req.body.girth.replace(/"/g, '\\\\\"');
+          tribe.leaders = req.body.leaders.replace(/"/g, '\\\\\"');
           tribe.creator_id = req.user._id;
 
           // save and check for errors

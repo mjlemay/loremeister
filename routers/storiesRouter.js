@@ -9,7 +9,7 @@ router.route('/')
         // logged in
         var story = new Story();// create a new instance of the Story model
         story.title = req.body.title;
-        story.slug = encodeURI(req.body.title.split(' ').join('_'));
+        story.slug = encodeURI(req.body.title);
         story.summary = req.body.summary;
         story.body = req.body.body;
         story.published_at = req.body.publish_date;

@@ -5,13 +5,16 @@ var Story = require('../models/story');
 var Character = require('../models/character');
 var Tribe = require('../models/tribe');
 var _ = require('lodash');
+var modifyStrings = require('../modify/strings');
 
 router.route('/:character_slug')
   .get(function(req, res) {
-      Character.findOne({slug: req.params.character_slug}, function(err, character) {
-          if (err || character == null) {
+    console.log(req.params.character_slug, modifyStrings.escapeThings(req.params.character_slug));
+      Character.findOne({slug: modifyStrings.escapeThings(req.params.character_slug)}, function(err, character) {
+          if (err || typeof character === null) {
             res.jsonp(err);
           }
+          console.log(character);
           res.jsonp(character);
       });
   })
@@ -24,7 +27,10 @@ router.route('/:character_slug')
             (req.user.is_admin === true ||
               req.user._id === character.creator_id)) {
             _.forOwn(req.body, function(value, key) {
-              character[key] = value;
+              if (character[key] == 'slug') {
+                value = encodeURI(value);
+              }
+              character[key] = value.replace(/"/g, '\\\\\"');
             });
             character.save(function(err) {
               if (err) {
