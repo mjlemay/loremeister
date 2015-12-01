@@ -1,6 +1,7 @@
 //app.js
 //load required modules
 var express = require('express');
+var cors = require('cors');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var passport = require('passport');
@@ -47,6 +48,7 @@ db.once('open', function (callback) {
 
 // use configurations and dependences
 var configPass = require('./routers/passport')(passport); // pass passport for configuration
+app.use(cors());
 app.use(favicon(__dirname + '/favicon.ico'));
 app.use(bodyParser.urlencoded({extended: true}));
 //used for express
