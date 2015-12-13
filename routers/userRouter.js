@@ -6,7 +6,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 
 router.post('/signup', passport.authenticate('local-signup', {
-    	successRedirect : '/', // redirect to the secure profile section
+    	successRedirect : '/error/signupGood', // redirect to the secure profile section
     	failureRedirect : '/error/loginFailure',
     	failureFlash : true // allow flash messages
 	})
@@ -17,6 +17,7 @@ router.post('/login', passport.authenticate('local-login', {
     failureRedirect : '/error/loginFailure',
     failureFlash : true
 }));
+
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 
