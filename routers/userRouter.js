@@ -6,7 +6,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 
 router.post('/signup', passport.authenticate('local-signup', {
-    	successRedirect : '/user/profile', // redirect to the secure profile section
+    	successRedirect : '/', // redirect to the secure profile section
     	failureRedirect : '/error/loginFailure',
     	failureFlash : true // allow flash messages
 	})
@@ -14,7 +14,7 @@ router.post('/signup', passport.authenticate('local-signup', {
 
 router.post('/login', passport.authenticate('local-login', {
     successRedirect : '/user/profile',
-    failureRedirect : '/user/profile',
+    failureRedirect : '/error/loginFailure',
     failureFlash : true
 }));
 
