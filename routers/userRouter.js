@@ -81,7 +81,7 @@ router.get('/logout', function(req, res) {
 
 router.get('/profile', function (req, res) {
   console.log('###### /profile ######');
-  console.log(req.user);
+  console.log(req);
   if(typeof req.user == 'undefined') {
     res.redirect('/error/loginFailure');
   } else {
